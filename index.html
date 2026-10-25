@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorveteria do Aniversário</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+        }
+        h1, h2, h3, .font-fun { font-family: 'Fredoka', cursive; }
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 antialiased p-4 sm:p-6 md:p-8 justify-center items-center">
+
+    <div class="max-w-xl w-full bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 border-4 border-white">
+
+        <header class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-pink-100 text-pink-500 rounded-full mb-3 text-3xl shadow-inner">
+                <i class="fa-solid fa-ice-cream"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-pink-600 tracking-wide">Sorveteria do Aniversário</h1>
+            <p class="text-slate-600 text-sm sm:text-base mt-1">Descubra qual combinação perfeita foi reservada pelas estrelas para o seu dia especial!</p>
+        </header>
+
+        <div class="bg-pink-50/80 rounded-2xl p-5 mb-6 border border-pink-100 shadow-sm">
+            <label for="birthdate" class="block font-fun text-lg font-semibold text-slate-700 mb-2 text-center">
+                <i class="fa-regular fa-calendar-days text-pink-500 mr-2"></i>Informe sua data de nascimento:
+            </label>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input type="date" id="birthdate" class="flex-1 px-4 py-3 rounded-xl border-2 border-pink-200 focus:border-pink-500 focus:outline-none text-slate-700 font-semibold text-center sm:text-left shadow-sm transition">
+                <button onclick="calcularSorvete()" class="bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white font-fun font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Revelar Sorvete</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="resultado" class="hidden">
+            <div class="bg-gradient-to-b from-amber-50 to-pink-50 rounded-2xl p-6 border-2 border-dashed border-pink-300 text-center shadow-md pop-in">
+
+                <div class="text-xs uppercase tracking-widest text-pink-400 font-bold mb-1">Seu Sorvete Astral</div>
+                <h2 id="combo-title" class="text-2xl font-bold text-slate-800 mb-4 font-fun"></h2>
+
+                <!-- Montagem visual: topping, sabor, base -->
+                <div class="relative mx-auto mb-6 flex flex-col items-center" style="width:160px;">
+                    <div id="topping-visual" class="relative z-30 animate-bounce flex justify-center" style="height:48px; margin-bottom:-14px;"></div>
+                    <div id="flavor-visual" class="relative z-20 flex justify-center"></div>
+                    <div id="base-visual" class="relative z-10 flex justify-center" style="margin-top:-18px;"></div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center mt-2">
+                    <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100">
+                        <span class="block text-xs text-slate-400 font-semibold uppercase">Base</span>
+                        <div id="base-text" class="font-bold text-slate-700 text-sm sm:text-base mt-1"></div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100">
+                        <span class="block text-xs text-slate-400 font-semibold uppercase">Sabor</span>
+                        <div id="sabor-text" class="font-bold text-slate-700 text-sm sm:text-base mt-1"></div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl shadow-sm border border-pink-100">
+                        <span class="block text-xs text-slate-400 font-semibold uppercase">Topping</span>
+                        <div id="topping-text" class="font-bold text-slate-700 text-sm sm:text-base mt-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 border-t border-slate-100 pt-6">
+            <h3 class="text-center font-fun text-lg font-bold text-slate-700 mb-4">
+                <i class="fa-solid fa-store text-amber-500 mr-2"></i>Nosso Cardápio Mágico
+            </h3>
+            <div class="space-y-4 text-xs sm:text-sm">
+                <div>
+                    <span class="font-bold text-amber-600 block mb-1" id="bases-titulo"></span>
+                    <div class="flex flex-wrap gap-2" id="bases-list"></div>
+                </div>
+                <div>
+                    <span class="font-bold text-pink-600 block mb-1" id="sabores-titulo"></span>
+                    <div class="flex flex-wrap gap-2" id="sabores-list"></div>
+                </div>
+                <div>
+                    <span class="font-bold text-purple-600 block mb-1" id="toppings-titulo"></span>
+                    <div class="flex flex-wrap gap-2" id="toppings-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           CONFIGURAÇÃO — É AQUI QUE VOCÊ PERSONALIZA
+           ---------------------------------------------------------------------
+           1. Coloque suas imagens (PNG/WebP com fundo transparente) na pasta
+              "img/" ao lado deste arquivo.
+           2. O campo "img" de cada item é o nome do arquivo dentro de img/.
+              Se o arquivo não existir, o site mostra um desenho padrão
+              no lugar (nada quebra).
+           3. Para ADICIONAR um item, copie uma linha e mude nome/img.
+              Para REMOVER, apague a linha. O site se ajusta sozinho
+              (a contagem no cardápio e o sorteio usam o tamanho da lista).
+           ===================================================================== */
+
+        const PASTA_IMAGENS = "img/";
+
+        // tipo: "casquinha" ou "copo" (define o desenho padrão sem imagem)
+        const BASES = [
+            { nome: "Casquinha Crocante", img: "base-casquinha.png", tipo: "casquinha" },
+            { nome: "Copo Festivo",       img: "base-copo.png",      tipo: "copo" }
+        ];
+
+        // hex = cor do desenho padrão; icon = ícone Font Awesome (gratuito)
+        const SABORES = [
+            { nome: "Morango Silvestre",     img: "sabor-morango.png",     hex: "#f43f5e", icon: "fa-heart" },
+            { nome: "Chocolate Belga",       img: "sabor-chocolate.png",   hex: "#78350f", icon: "fa-cookie-bite" },
+            { nome: "Baunilha de Madagascar",img: "sabor-baunilha.png",    hex: "#f5deb3", icon: "fa-ice-cream" },
+            { nome: "Pistache Premium",      img: "sabor-pistache.png",    hex: "#86c97a", icon: "fa-seedling" },
+            { nome: "Menta com Chocolate",   img: "sabor-menta.png",       hex: "#5eead4", icon: "fa-leaf" },
+            { nome: "Maracujá Tropical",     img: "sabor-maracuja.png",    hex: "#facc15", icon: "fa-sun" },
+            { nome: "Coco Cremoso",          img: "sabor-coco.png",        hex: "#f1f5f9", icon: "fa-cloud" },
+            { nome: "Limão Siciliano",       img: "sabor-limao.png",       hex: "#d9f26b", icon: "fa-lemon" },
+            { nome: "Doce de Leite",         img: "sabor-doce-de-leite.png", hex: "#c8873a", icon: "fa-mug-hot" },
+            { nome: "Manga Dourada",         img: "sabor-manga.png",       hex: "#fb923c", icon: "fa-sun" },
+            { nome: "Uva Roxa",              img: "sabor-uva.png",         hex: "#8b5cf6", icon: "fa-gem" },
+            { nome: "Flocos Crocantes",      img: "sabor-flocos.png",      hex: "#a16207", icon: "fa-snowflake" }
+        ];
+
+        // cor = cor do ícone no desenho padrão
+        const TOPPINGS = [
+            { nome: "Granulado Colorido",      img: "topping-granulado.png",    cor: "#ec4899", icon: "fa-wand-magic-sparkles" },
+            { nome: "Calda de Fudge Quente",   img: "topping-fudge.png",        cor: "#78350f", icon: "fa-droplet" },
+            { nome: "Chantilly & Cereja",      img: "topping-chantilly.png",    cor: "#dc2626", icon: "fa-apple-whole" },
+            { nome: "Pedaços de Biscoito",     img: "topping-biscoito.png",     cor: "#b45309", icon: "fa-cookie" },
+            { nome: "Castanhas Caramelizadas", img: "topping-castanhas.png",    cor: "#92400e", icon: "fa-cubes-stacked" },
+            { nome: "Confetes de Chocolate",   img: "topping-confetes.png",     cor: "#7c3aed", icon: "fa-circle" },
+            { nome: "Coco Ralado",             img: "topping-coco-ralado.png",  cor: "#64748b", icon: "fa-snowflake" },
+            { nome: "Calda de Morango",        img: "topping-calda-morango.png",cor: "#e11d48", icon: "fa-heart" },
+            { nome: "Leite Condensado",        img: "topping-leite-condensado.png", cor: "#d97706", icon: "fa-bowl-food" },
+            { nome: "Marshmallow",             img: "topping-marshmallow.png",  cor: "#f472b6", icon: "fa-cloud" },
+            { nome: "Pasta de Amendoim",       img: "topping-amendoim.png",     cor: "#a16207", icon: "fa-seedling" },
+            { nome: "Bala de Menta",           img: "topping-menta.png",        cor: "#0d9488", icon: "fa-candy-cane" }
+        ];
+
+        /* =====================================================================
+           CÓDIGO DO SITE (normalmente não precisa mexer daqui para baixo)
+           ===================================================================== */
+
+        // Desenho padrão usado quando a imagem não existe
+        function desenhoPadrao(tipo, idx, tam) {
+            if (tipo === "sabor") {
+                const s = SABORES[idx];
+                return `<div class="rounded-full border-4 border-white shadow-lg flex items-center justify-center text-white"
+                    style="width:${tam}px;height:${tam}px;background:${s.hex};font-size:${tam * 0.32}px">
+                    <i class="fa-solid ${s.icon}" style="text-shadow:0 1px 3px rgba(0,0,0,.35)"></i></div>`;
+            }
+            if (tipo === "topping") {
+                const t = TOPPINGS[idx];
+                return `<div class="rounded-full bg-white border-2 border-pink-100 shadow flex items-center justify-center"
+                    style="width:${tam}px;height:${tam}px;color:${t.cor};font-size:${tam * 0.5}px">
+                    <i class="fa-solid ${t.icon}"></i></div>`;
+            }
+            // base
+            const b = BASES[idx];
+            if (b.tipo === "copo") {
+                return `<div class="bg-gradient-to-b from-blue-400 to-blue-600 rounded-b-xl border-t-2 border-white shadow-md"
+                    style="width:${tam * 0.85}px;height:${tam * 0.6}px"></div>`;
+            }
+            const metade = tam * 0.3;
+            return `<div style="width:0;height:0;border-left:${metade}px solid transparent;border-right:${metade}px solid transparent;border-top:${tam * 0.6}px solid #d97706;filter:drop-shadow(0 3px 3px rgba(0,0,0,.25))"></div>`;
+        }
+
+        // Gera <img> que cai no desenho padrão se o arquivo não carregar
+        function imagemHTML(tipo, idx, tam) {
+            const lista = tipo === "sabor" ? SABORES : tipo === "topping" ? TOPPINGS : BASES;
+            const item = lista[idx];
+            return `<img src="${PASTA_IMAGENS}${item.img}" alt="${item.nome}"
+                data-tipo="${tipo}" data-idx="${idx}" data-tam="${tam}"
+                style="width:${tam}px;height:${tam}px;object-fit:contain"
+                class="drop-shadow-md" onerror="imagemFalhou(this)">`;
+        }
+
+        function imagemFalhou(el) {
+            el.onerror = null;
+            el.outerHTML = desenhoPadrao(el.dataset.tipo, Number(el.dataset.idx), Number(el.dataset.tam));
+        }
+
+        function carregarCardapio() {
+            document.getElementById('bases-titulo').textContent    = `Bases (${BASES.length} opções):`;
+            document.getElementById('sabores-titulo').textContent  = `Sabores (${SABORES.length} opções):`;
+            document.getElementById('toppings-titulo').textContent = `Toppings (${TOPPINGS.length} opções):`;
+
+            const chip = (cls, tipo, i, nome) =>
+                `<span class="${cls} border px-2 py-1 rounded-lg font-medium inline-flex items-center gap-1.5">
+                    ${imagemHTML(tipo, i, 22)} ${nome}</span>`;
+
+            document.getElementById('bases-list').innerHTML =
+                BASES.map((b, i) => chip("bg-amber-50 text-amber-800 border-amber-200", "base", i, b.nome)).join("");
+            document.getElementById('sabores-list').innerHTML =
+                SABORES.map((s, i) => chip("bg-pink-50 text-pink-800 border-pink-200", "sabor", i, s.nome)).join("");
+            document.getElementById('toppings-list').innerHTML =
+                TOPPINGS.map((t, i) => chip("bg-purple-50 text-purple-800 border-purple-200", "topping", i, t.nome)).join("");
+        }
+
+        // Cálculo determinístico: a mesma data sempre dá o mesmo sorvete
+        function calcularSorvete() {
+            const input = document.getElementById('birthdate');
+            if (!input.value) {
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 500);
+                return;
+            }
+            const [ano, mes, dia] = input.value.split('-').map(Number);
+
+            const baseIdx    = (dia + mes) % BASES.length;
+            const saborIdx   = (dia * 31 + mes * 7 + ano) % SABORES.length;
+            const toppingIdx = (dia * 17 + mes * 13 + ano * 3) % TOPPINGS.length;
+
+            exibirResultado(baseIdx, saborIdx, toppingIdx);
+            lancarConfeti();
+        }
+
+        function exibirResultado(bIdx, sIdx, tIdx) {
+            const container = document.getElementById('resultado');
+            container.classList.remove('hidden');
+
+            document.getElementById('combo-title').innerText = "Sua Combinação Perfeita!";
+            document.getElementById('base-text').innerText    = BASES[bIdx].nome;
+            document.getElementById('sabor-text').innerText   = SABORES[sIdx].nome;
+            document.getElementById('topping-text').innerText = TOPPINGS[tIdx].nome;
+
+            document.getElementById('topping-visual').innerHTML = imagemHTML("topping", tIdx, 48);
+            document.getElementById('flavor-visual').innerHTML  = imagemHTML("sabor", sIdx, 112);
+            document.getElementById('base-visual').innerHTML    = imagemHTML("base", bIdx, 96);
+
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function lancarConfeti() {
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        window.onload = function () {
+            carregarCardapio();
+            document.getElementById('birthdate').value = new Date().toISOString().split('T')[0];
+        };
+    </script>
+</body>
+</html>
