@@ -119,44 +119,44 @@
               (a contagem no cardápio e o sorteio usam o tamanho da lista).
            ===================================================================== */
 
-        const PASTA_IMAGENS = "img/";
+        const PASTA_IMAGENS = "imagens";
 
         // tipo: "casquinha" ou "copo" (define o desenho padrão sem imagem)
         const BASES = [
-            { nome: "Casquinha Crocante", img: "base-casquinha.png", tipo: "casquinha" },
-            { nome: "Copo Festivo",       img: "base-copo.png",      tipo: "copo" }
+            { nome: "Casquinha", img: "base-casquinha.png", tipo: "casquinha" },
+            { nome: "Copo",       img: "base-copo.png",      tipo: "copo" }
         ];
 
         // hex = cor do desenho padrão; icon = ícone Font Awesome (gratuito)
         const SABORES = [
-            { nome: "Morango Silvestre",     img: "sabor-morango.png",     hex: "#f43f5e", icon: "fa-heart" },
-            { nome: "Chocolate Belga",       img: "sabor-chocolate.png",   hex: "#78350f", icon: "fa-cookie-bite" },
-            { nome: "Baunilha de Madagascar",img: "sabor-baunilha.png",    hex: "#f5deb3", icon: "fa-ice-cream" },
-            { nome: "Pistache Premium",      img: "sabor-pistache.png",    hex: "#86c97a", icon: "fa-seedling" },
+            { nome: "Morango",     img: "sabor-morango.png",     hex: "#f43f5e", icon: "fa-heart" },
+            { nome: "Chocolate",       img: "sabor-chocolate.png",   hex: "#78350f", icon: "fa-cookie-bite" },
+            { nome: "Baunilha",img: "sabor-baunilha.png",    hex: "#f5deb3", icon: "fa-ice-cream" },
+            { nome: "Pistache",      img: "sabor-pistache.png",    hex: "#86c97a", icon: "fa-seedling" },
             { nome: "Menta com Chocolate",   img: "sabor-menta.png",       hex: "#5eead4", icon: "fa-leaf" },
-            { nome: "Maracujá Tropical",     img: "sabor-maracuja.png",    hex: "#facc15", icon: "fa-sun" },
-            { nome: "Coco Cremoso",          img: "sabor-coco.png",        hex: "#f1f5f9", icon: "fa-cloud" },
+            { nome: "Maracujá",     img: "sabor-maracuja.png",    hex: "#facc15", icon: "fa-sun" },
+            { nome: "Coco",          img: "sabor-coco.png",        hex: "#f1f5f9", icon: "fa-cloud" },
             { nome: "Limão Siciliano",       img: "sabor-limao.png",       hex: "#d9f26b", icon: "fa-lemon" },
             { nome: "Doce de Leite",         img: "sabor-doce-de-leite.png", hex: "#c8873a", icon: "fa-mug-hot" },
-            { nome: "Manga Dourada",         img: "sabor-manga.png",       hex: "#fb923c", icon: "fa-sun" },
-            { nome: "Uva Roxa",              img: "sabor-uva.png",         hex: "#8b5cf6", icon: "fa-gem" },
-            { nome: "Flocos Crocantes",      img: "sabor-flocos.png",      hex: "#a16207", icon: "fa-snowflake" }
+            { nome: "Manga",         img: "sabor-manga.png",       hex: "#fb923c", icon: "fa-sun" },
+            { nome: "Uva",              img: "sabor-uva.png",         hex: "#8b5cf6", icon: "fa-gem" },
+            { nome: "Flocos",      img: "sabor-flocos.png",      hex: "#a16207", icon: "fa-snowflake" }
         ];
 
         // cor = cor do ícone no desenho padrão
         const TOPPINGS = [
             { nome: "Granulado Colorido",      img: "topping-granulado.png",    cor: "#ec4899", icon: "fa-wand-magic-sparkles" },
-            { nome: "Calda de Fudge Quente",   img: "topping-fudge.png",        cor: "#78350f", icon: "fa-droplet" },
-            { nome: "Chantilly & Cereja",      img: "topping-chantilly.png",    cor: "#dc2626", icon: "fa-apple-whole" },
+            { nome: "Calda de Chocolate",   img: "topping-fudge.png",        cor: "#78350f", icon: "fa-droplet" },
+            { nome: "Chantilly",      img: "topping-chantilly.png",    cor: "#dc2626", icon: "fa-apple-whole" },
             { nome: "Pedaços de Biscoito",     img: "topping-biscoito.png",     cor: "#b45309", icon: "fa-cookie" },
-            { nome: "Castanhas Caramelizadas", img: "topping-castanhas.png",    cor: "#92400e", icon: "fa-cubes-stacked" },
+            { nome: "Castanhas", img: "topping-castanhas.png",    cor: "#92400e", icon: "fa-cubes-stacked" },
             { nome: "Confetes de Chocolate",   img: "topping-confetes.png",     cor: "#7c3aed", icon: "fa-circle" },
             { nome: "Coco Ralado",             img: "topping-coco-ralado.png",  cor: "#64748b", icon: "fa-snowflake" },
             { nome: "Calda de Morango",        img: "topping-calda-morango.png",cor: "#e11d48", icon: "fa-heart" },
             { nome: "Leite Condensado",        img: "topping-leite-condensado.png", cor: "#d97706", icon: "fa-bowl-food" },
             { nome: "Marshmallow",             img: "topping-marshmallow.png",  cor: "#f472b6", icon: "fa-cloud" },
-            { nome: "Pasta de Amendoim",       img: "topping-amendoim.png",     cor: "#a16207", icon: "fa-seedling" },
-            { nome: "Bala de Menta",           img: "topping-menta.png",        cor: "#0d9488", icon: "fa-candy-cane" }
+            { nome: "Tubinho de Chocolate",       img: "topping-tubinho",     cor: "#a16207", icon: "fa-seedling" },
+            { nome: "Pedaço de chocolate",           img: "topping-chocolate.png",        cor: "#0d9488", icon: "fa-candy-cane" }
         ];
 
         /* =====================================================================
